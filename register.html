@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Student Insurance Tracking System</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body class="auth-body">
+  <div class="top-bar">
+    <div class="top-bar-left">Eastern Visayas State University - Ormoc City Campus</div>
+    <div class="top-bar-right">
+      <a href="login.html">Login</a>
+      <span>|</span>
+      <a href="register.html">Register</a>
+    </div>
+  </div>
+
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <a href="login.html" class="auth-tab">Sign In</a>
+        <a href="register.html" class="auth-tab active">Register</a>
+      </div>
+      <div class="auth-content">
+        <h2 class="auth-title">Create Student Account</h2>
+        <div id="alert-box"></div>
+        <form class="auth-form" id="register-form">
+          <div class="form-group full-width">
+            <label for="student_id" id="id-label">Student ID <span class="required">*</span></label>
+            <input type="text" id="student_id" placeholder="e.g., 2023-12345" required>
+            <small class="muted" id="id-help">Enter your official student ID</small>
+          </div>
+          <div class="form-group full-width">
+            <label for="fullname">Full Name <span class="required">*</span></label>
+            <input type="text" id="fullname" required>
+          </div>
+          <div class="form-group full-width">
+            <label for="email">Email Address <span class="required">*</span></label>
+            <input type="email" id="email" required>
+          </div>
+          <div class="form-group full-width">
+            <label for="username">Username <span class="required">*</span></label>
+            <input type="text" id="username" required pattern="[A-Za-z0-9_]{3,20}">
+            <small class="muted">3-20 characters: letters, numbers, underscore</small>
+          </div>
+          <div class="form-group full-width password-field">
+            <label for="password">Password <span class="required">*</span></label>
+            <div class="password-input-wrap">
+              <input type="password" id="password" required minlength="8">
+              <button type="button" class="password-toggle" id="toggle-password" aria-label="Show password">Show</button>
+            </div>
+            <small class="muted">Minimum 8 characters with letters and numbers</small>
+          </div>
+          <div class="form-group full-width password-field">
+            <label for="confirm_password">Confirm Password <span class="required">*</span></label>
+            <div class="password-input-wrap">
+              <input type="password" id="confirm_password" required>
+              <button type="button" class="password-toggle" id="toggle-confirm-password" aria-label="Show confirm password">Show</button>
+            </div>
+          </div>
+          <div class="form-row form-footer">
+            <label class="copy-checkbox">
+              <input type="checkbox" id="agree" required>
+              <span>I agree to the Terms and Privacy Policy</span>
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary auth-submit" id="submit-btn">CREATE ACCOUNT</button>
+          <p class="auth-footer-text">
+            Already have an account? <a href="login.html" class="auth-link">Sign in here</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    API.init().catch(() => {});
+
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertBox = document.getElementById('alert-box');
+      const btn = document.getElementById('submit-btn');
+      if (!document.getElementById('agree').checked) {
+        showAlert(alertBox, 'You must agree to the Terms and Privacy Policy.', 'danger');
+        return;
+      }
+      setLoading(btn, true);
+      try {
+        await API.post('/auth/register', {
+          student_id: document.getElementById('student_id').value.trim(),
+          fullname: document.getElementById('fullname').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          username: document.getElementById('username').value.trim(),
+          password: document.getElementById('password').value,
+          confirm_password: document.getElementById('confirm_password').value,
+        });
+        showAlert(alertBox, 'Account created! Redirecting to login...', 'success');
+        setTimeout(() => { window.location.href = 'login.html'; }, 600);
+      } catch (err) {
+        let msg = err.message || 'Registration failed.';
+        if (err.errors) {
+          msg += '<ul style="margin:8px 0 0 18px">' + Object.values(err.errors).map(v => `<li>${v}</li>`).join('') + '</ul>';
+        }
+        showAlert(alertBox, msg, 'danger');
+      } finally {
+        setLoading(btn, false);
+      }
+    });
+
+    const togglePassword = document.getElementById('toggle-password');
+    const toggleConfirmPassword = document.getElementById('toggle-confirm-password');
+
+    function attachToggle(buttonId, inputId) {
+      const toggle = document.getElementById(buttonId);
+      if (!toggle) return;
+      toggle.addEventListener('click', () => {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        const hidden = input.type === 'password';
+        input.type = hidden ? 'text' : 'password';
+        toggle.textContent = hidden ? 'Hide' : 'Show';
+      });
+    }
+
+    attachToggle('toggle-password', 'password');
+    attachToggle('toggle-confirm-password', 'confirm_password');
+  </script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard - Insurance Tracking</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../assets/css/app.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body class="page-dashboard-fullscreen dashboard-app">
+  <div class="top-bar">
+    <div class="top-bar-left">Eastern Visayas State University - Ormoc City Campus</div>
+    <div class="top-bar-right">
+      <span id="student-name">Student</span>
+      <span id="role-badge" class="role-badge">student</span>
+      <span>|</span>
+      <a href="#" onclick="logout(); return false;">Logout</a>
+    </div>
+  </div>
+
+  <header class="main-header">
+    <div class="logo-title">
+      <img src="../EVSU_Official_Logo.png" alt="EVSU Logo" class="logo-image" onerror="this.style.display='none'">
+      <div class="title-text">
+        <h1>EVSU-OCC</h1>
+        <p>Student Insurance Tracking - Student Dashboard</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-layout dashboard-main-layout">
+    <aside class="sidebar dashboard-sidebar" id="dashboard-sidebar">
+      <div class="nav-section">
+        <div class="nav-section-title">Student Menu</div>
+        <a href="#" class="nav-item active" data-panel="overview"><span class="nav-icon">#</span><span>Dashboard</span></a>
+        <a href="#" class="nav-item" data-panel="beneficiary"><span class="nav-icon">B</span><span>Beneficiary Info</span></a>
+        <a href="#" class="nav-item" data-panel="notifications"><span class="nav-icon">N</span><span>Notifications</span></a>
+      </div>
+    </aside>
+
+    <div class="main-content">
+      <div id="alert-box"></div>
+      <header class="dashboard-page-header">
+        <h1 class="content-header">Student Dashboard</h1>
+        <p class="dashboard-page-subtitle">View your insurance status, update beneficiary details, and read notifications.</p>
+      </header>
+
+      <div id="panel-overview">
+        <div class="stats-container">
+          <div class="stat-card">
+            <div class="stat-label">Insurance Status</div>
+            <div class="stat-number" id="insurance-status">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Last Updated</div>
+            <div class="stat-number" id="last-updated">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Notifications</div>
+            <div class="stat-number" id="notify-count">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="panel-beneficiary" class="hidden">
+        <div class="dashboard-content-scroll">
+          <div class="panel-card">
+            <h3>Beneficiary Information</h3>
+            <p class="muted">All fields are required. Submit to update your insurance record.</p>
+            <form id="beneficiary-form">
+              <div class="form-grid">
+                <div class="form-group full-width">
+                  <label for="ben-fullname">Beneficiary Full Name</label>
+                  <input type="text" id="ben-fullname" class="form-control" required>
+                </div>
+                <div class="form-group full-width">
+                  <label for="ben-relationship">Relationship</label>
+                  <input type="text" id="ben-relationship" class="form-control" required>
+                </div>
+                <div class="form-group full-width">
+                  <label for="ben-contact">Contact Number</label>
+                  <input type="tel" id="ben-contact" class="form-control" required>
+                </div>
+                <div class="form-group full-width">
+                  <label for="ben-address">Address</label>
+                  <textarea id="ben-address" rows="3" class="form-control" required></textarea>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" id="save-ben-btn">Submit Update</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div id="panel-notifications" class="hidden">
+        <div class="table-scroll">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Message</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="notifications-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-overlay" id="loading"><div class="loading-spinner"></div></div>
+
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/student-dashboard.js?v=20260604"></script>
+</body>
+</html>

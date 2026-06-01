@@ -1,0 +1,12 @@
+RewriteEngine On
+RewriteBase /InsuranceTrackingSystem/
+
+# Route /api/* to index.php with route parameter (XAMPP-friendly)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/(.*)$ api/index.php?route=/$1 [QSA,L]
+
+# Deny access to .env
+<Files ".env">
+  Require all denied
+</Files>

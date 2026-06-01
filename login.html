@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In - Student Insurance Tracking System</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body class="auth-body">
+  <div class="top-bar">
+    <div class="top-bar-left">Eastern Visayas State University - Ormoc City Campus</div>
+    <div class="top-bar-right">
+      <a href="login.html">Login</a>
+      <span>|</span>
+      <a href="register.html">Register</a>
+    </div>
+  </div>
+
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <a href="login.html" class="auth-tab active">Sign In</a>
+        <a href="register.html" class="auth-tab">Register</a>
+      </div>
+      <div class="auth-content">
+        <h2 class="auth-title">Insurance Tracking Portal</h2>
+        <div id="alert-box"></div>
+        <form class="auth-form" id="login-form">
+          <div class="form-group full-width">
+            <label for="identifier">Email or Username <span class="required">*</span></label>
+            <input type="text" id="identifier" placeholder="Enter email or username" required autocomplete="username">
+          </div>
+          <div class="form-group full-width password-field">
+            <label for="password">Password <span class="required">*</span></label>
+            <div class="password-input-wrap">
+              <input type="password" id="password" placeholder="Enter your password" required autocomplete="current-password">
+              <button type="button" class="password-toggle" id="toggle-password" aria-label="Show password">Show</button>
+            </div>
+          </div>
+          <div class="form-row form-footer auth-form-options">
+            <label class="copy-checkbox">
+              <input type="checkbox" name="remember">
+              <span>Remember me</span>
+            </label>
+            <a href="forgot-password.html" class="auth-link forgot-link">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn btn-primary auth-submit" id="submit-btn">SIGN IN</button>
+          <div class="auth-divider"><span>or</span></div>
+          <button type="button" class="btn btn-google" id="btn-google">
+            <span class="btn-google-icon" aria-hidden="true">G</span>
+            Continue with Google
+          </button>
+          <p class="auth-note muted small-text">
+            By using this service, you agree to the university online services terms and privacy statement.
+          </p>
+          <p class="auth-footer-text">
+            Don't have an account? <a href="register.html" class="auth-link">Register here</a><br>
+            <a href="index.html" class="auth-link muted">← Back to home</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    API.init().catch(() => {});
+
+    const params = new URLSearchParams(window.location.search);
+    const authError = params.get('error');
+    if (authError) {
+      let msg = authError;
+      if (msg.includes('not enabled') || msg.includes('Unsupported provider')) {
+        msg = 'Google sign-in is not set up yet. Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to your .env file (see .env.example), and set the redirect URI in Google Cloud Console to: ' + window.location.origin + '/InsuranceTrackingSystem/auth/google-callback.php';
+      }
+      showAlert(document.getElementById('alert-box'), msg, 'danger');
+      if (window.history.replaceState) {
+        window.history.replaceState({}, '', 'login.html');
+      }
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      const alertBox = document.getElementById('alert-box');
+      setLoading(btn, true);
+      try {
+        const res = await API.post('/auth/login', {
+          identifier: document.getElementById('identifier').value.trim(),
+          password: document.getElementById('password').value,
+        });
+        window.location.href = '/InsuranceTrackingSystem/' + (res.data.redirect || 'student/dashboard.html');
+      } catch (err) {
+        showAlert(alertBox, err.message || 'Login failed.', 'danger');
+      } finally {
+        setLoading(btn, false);
+      }
+    });
+
+    document.getElementById('btn-google').addEventListener('click', () => {
+      window.location.href = 'auth/google-start.php';
+    });
+
+    const togglePassword = document.getElementById('toggle-password');
+    if (togglePassword) {
+      togglePassword.addEventListener('click', () => {
+        const passwordInput = document.getElementById('password');
+        if (!passwordInput) return;
+        const isHidden = passwordInput.type === 'password';
+        passwordInput.type = isHidden ? 'text' : 'password';
+        togglePassword.textContent = isHidden ? 'Hide' : 'Show';
+      });
+    }
+  </script>
+</body>
+</html>

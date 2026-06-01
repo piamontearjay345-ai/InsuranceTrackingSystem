@@ -1,0 +1,7 @@
+RewriteEngine On
+
+# If mod_rewrite is off, requests still work via api/index.php?route=...
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?route=/$1 [QSA,L]

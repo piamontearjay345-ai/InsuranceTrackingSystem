@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signing in…</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../assets/css/app.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+<body class="auth-body">
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-content" style="text-align:center;padding:40px 24px;">
+        <div class="loading-spinner" style="margin:0 auto 16px;"></div>
+        <p class="muted">Completing Google sign-in…</p>
+        <div id="alert-box"></div>
+      </div>
+    </div>
+  </div>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script>
+    (async function () {
+      const alertBox = document.getElementById('alert-box');
+      const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+      const accessToken = hash.get('access_token');
+      const refreshToken = hash.get('refresh_token') || '';
+
+      if (!accessToken) {
+        const err = new URLSearchParams(window.location.search).get('error_description')
+          || 'Google sign-in was cancelled or failed.';
+        showAlert(alertBox, err, 'danger');
+        setTimeout(() => { window.location.href = '../login.html'; }, 2500);
+        return;
+      }
+
+      try {
+        const res = await API.post('/auth/oauth/complete', {
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+        window.location.replace('/InsuranceTrackingSystem/' + (res.data.redirect || 'student/dashboard.html'));
+      } catch (err) {
+        showAlert(alertBox, err.message || 'Google sign-in failed.', 'danger');
+        setTimeout(() => { window.location.href = '../login.html'; }, 2500);
+      }
+    })();
+  </script>
+</body>
+</html>

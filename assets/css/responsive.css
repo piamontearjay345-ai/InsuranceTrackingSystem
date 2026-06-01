@@ -1,0 +1,513 @@
+/**
+ * Responsive layout — mobile, tablet, laptop, desktop
+ * Load after styles.css and app.css
+ */
+
+/* ─── Foundations ─── */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+img,
+.logo-image,
+picture,
+video,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Prevent iOS zoom on focus */
+@media (max-width: 768px) {
+  input,
+  select,
+  textarea,
+  .form-control {
+    font-size: 16px;
+  }
+}
+
+/* Touch-friendly controls */
+@media (hover: none), (max-width: 768px) {
+  .btn,
+  .nav-item,
+  .nav-bar a,
+  .auth-tab,
+  .pagination a,
+  .password-toggle,
+  .auth-link-btn,
+  .btn-google {
+    min-height: 44px;
+  }
+
+  .nav-bar a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ─── Top bar (all pages) ─── */
+@media (max-width: 768px) {
+  .top-bar {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  .top-bar-left,
+  .top-bar-right {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+  }
+
+  /* Hide "|" separators only, keep role badge */
+  .top-bar-right > span:not([class]) {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-bar-left {
+    font-size: 11px;
+  }
+
+  .role-badge {
+    font-size: 0.65rem;
+  }
+}
+
+/* ─── Header & public nav ─── */
+@media (max-width: 768px) {
+  .main-header {
+    padding: 14px 16px;
+  }
+
+  .logo-title {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .title-text h1 {
+    font-size: 1.35rem;
+    line-height: 1.2;
+  }
+
+  .title-text p {
+    font-size: 0.8rem;
+  }
+
+  .nav-bar ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 12px;
+    padding: 12px 14px;
+  }
+
+  .nav-bar a {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+
+  .hero {
+    margin: 16px;
+    padding: 24px 18px;
+  }
+
+  .hero h2 {
+    font-size: 1.35rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-buttons .btn {
+    width: 100%;
+  }
+
+  .cards,
+  .bottom-section,
+  .about-layout,
+  .contact-layout {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+}
+
+/* ─── Auth (login, register, forgot password) ─── */
+@media (max-width: 576px) {
+  .auth-body {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .auth-wrapper {
+    width: 100%;
+    max-width: 100%;
+    margin: 12px auto;
+    padding: 0 10px 24px;
+    box-sizing: border-box;
+  }
+
+  .auth-card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    border-radius: 12px;
+  }
+
+  .auth-content {
+    padding: 22px 16px !important;
+  }
+
+  .auth-title {
+    font-size: 1.35rem;
+  }
+
+  .auth-tabs {
+    flex-wrap: wrap;
+  }
+
+  .auth-tab {
+    flex: 1 1 45%;
+    text-align: center;
+    padding: 12px 8px;
+    font-size: 0.9rem;
+  }
+
+  .auth-submit,
+  .btn-google {
+    width: 100%;
+  }
+
+  .auth-form-options {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 10px;
+  }
+
+  .password-input-wrap {
+    display: flex;
+    width: 100%;
+  }
+
+  .password-input-wrap input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .verification-code-input {
+    font-size: 1.25rem;
+    letter-spacing: 0.25em;
+  }
+
+  .step-hint {
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 992px) {
+  .auth-wrapper {
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* ─── Full-screen dashboards (student, admin, superadmin) ─── */
+@media (max-width: 992px) {
+  .page-dashboard-fullscreen .dashboard-main-layout {
+    flex-direction: column !important;
+  }
+
+  .page-dashboard-fullscreen .dashboard-sidebar {
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    height: auto !important;
+    flex-shrink: 0;
+    overflow: visible;
+    padding-top: 12px;
+    padding-bottom: 4px;
+  }
+
+  .page-dashboard-fullscreen .dashboard-sidebar::after {
+    display: none;
+  }
+
+  .page-dashboard-fullscreen .dashboard-sidebar .nav-section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    padding: 4px 12px 10px;
+    margin-bottom: 0;
+  }
+
+  .page-dashboard-fullscreen .dashboard-sidebar .nav-section-title {
+    display: none;
+  }
+
+  .page-dashboard-fullscreen .dashboard-sidebar .nav-item {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    margin: 0;
+    padding: 10px 14px;
+    min-height: 44px;
+  }
+
+  .page-dashboard-fullscreen .dashboard-sidebar .nav-item:hover {
+    transform: none;
+  }
+
+  .page-dashboard-fullscreen .dashboard-main-layout .main-content {
+    padding: 20px 16px 24px !important;
+    width: 100% !important;
+  }
+
+  .page-dashboard-fullscreen .stats-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-dashboard-fullscreen .content-header {
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+  }
+
+  .page-dashboard-fullscreen .stats-container {
+    grid-template-columns: 1fr !important;
+  }
+
+  .page-dashboard-fullscreen .stat-number {
+    font-size: 1.75rem !important;
+  }
+
+  .page-dashboard-fullscreen .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-dashboard-fullscreen .toolbar input,
+  .page-dashboard-fullscreen .toolbar select,
+  .page-dashboard-fullscreen .toolbar .btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .page-dashboard-fullscreen [id^="panel-"] > .panel-card {
+    padding: 14px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .page-dashboard-fullscreen .table-scroll {
+    border-radius: 8px;
+  }
+
+  .page-dashboard-fullscreen .pagination {
+    flex-wrap: wrap;
+  }
+
+  .page-dashboard-fullscreen .pagination a {
+    padding: 10px 12px;
+  }
+
+  .action-stack {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .action-stack .btn {
+    width: 100%;
+  }
+}
+
+/* Laptop */
+@media (min-width: 993px) and (max-width: 1199px) {
+  .page-dashboard-fullscreen .dashboard-sidebar {
+    width: 220px;
+  }
+
+  .page-dashboard-fullscreen .dashboard-main-layout .main-content {
+    padding: 28px 28px 24px;
+  }
+
+  .page-dashboard-fullscreen .stats-container {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Large desktop */
+@media (min-width: 1200px) {
+  .page-dashboard-fullscreen .dashboard-main-layout .main-content {
+    padding: 32px 40px 28px;
+  }
+
+  .auth-wrapper {
+    max-width: 480px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .page-dashboard-fullscreen .dashboard-main-layout .main-content {
+    padding: 36px 48px 32px;
+  }
+
+  .container,
+  .hero,
+  .cards {
+    max-width: 1200px;
+  }
+}
+
+/* Tables: horizontal scroll container (all breakpoints) */
+.table-scroll {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Legacy dashboard layout (non-fullscreen) */
+@media (max-width: 992px) {
+  .main-layout:not(.dashboard-main-layout) {
+    width: calc(100% - 24px) !important;
+    margin: 16px auto !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .btn-google {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .permissions-table {
+    min-width: 600px;
+  }
+}
+
+/* Modals */
+@media (max-width: 576px) {
+  .modal-overlay {
+    padding: 10px;
+    align-items: flex-end;
+  }
+
+  .modal-box {
+    max-width: 100%;
+    max-height: 92vh;
+    max-height: 92dvh;
+    overflow-y: auto;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .modal-footer {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .modal-footer .btn {
+    width: 100%;
+  }
+}
+
+/* Alerts */
+@media (max-width: 576px) {
+  .alert {
+    font-size: 0.9rem;
+    padding: 12px 14px;
+  }
+}
+
+/* Safe area (notched phones) */
+@supports (padding: max(0px)) {
+  .top-bar,
+  .main-header,
+  .auth-wrapper,
+  .page-dashboard-fullscreen .dashboard-main-layout .main-content,
+  .modal-overlay {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+
+  .page-dashboard-fullscreen {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print */
+@media print {
+  .top-bar,
+  .main-header,
+  .nav-bar,
+  .sidebar,
+  .dashboard-sidebar,
+  .toolbar,
+  .pagination,
+  .loading-overlay {
+    display: none !important;
+  }
+
+  .page-dashboard-fullscreen,
+  html:has(.page-dashboard-fullscreen) {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .page-dashboard-fullscreen .dashboard-main-layout,
+  .page-dashboard-fullscreen .main-content {
+    display: block !important;
+    overflow: visible !important;
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .table-scroll {
+    overflow: visible !important;
+  }
+}
