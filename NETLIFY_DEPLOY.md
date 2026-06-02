@@ -27,6 +27,7 @@ In **Site settings → Environment variables**, add:
 | `SUPABASE_ANON_KEY` | Anon public key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Service role (secret) |
 | `APP_URL` | `https://YOUR-SITE.netlify.app` (no trailing slash) |
+| `PUBLIC_APP_URL` | Same as `APP_URL` — used for **email confirmation** links (must not be `localhost`) |
 | `URL` | Same as `APP_URL` (Netlify sets `URL` on deploy — you can rely on that) |
 | `SESSION_SECRET` | Random 32+ char string (cookie signing) |
 | `APP_ENV` | `production` |
@@ -45,18 +46,20 @@ In **Site settings → Environment variables**, add:
 
 ## 4. Supabase Auth URLs (email confirmation)
 
+**If confirmation opens `localhost:3000` on a phone, fix Supabase Site URL** — see `docs/SUPABASE_EMAIL_CONFIRMATION.md`.
+
 In **Supabase Dashboard → Authentication → URL Configuration**:
 
 | Setting | Value |
 |---------|--------|
-| **Site URL** | `https://YOUR-SITE.netlify.app` (not `localhost`) |
+| **Site URL** | `https://YOUR-SITE.netlify.app` (not `localhost` or `localhost:3000`) |
 | **Redirect URLs** | `https://YOUR-SITE.netlify.app/auth/email-confirmed.html` |
 
 For local XAMPP testing, also add:
 
 `http://localhost/InsuranceTrackingSystem/auth/email-confirmed.html`
 
-Set **`APP_URL`** in Netlify (and `.env` locally) to the same base URL with **no trailing slash**. New signups get confirmation links to `/auth/email-confirmed.html`, which shows “You can now log in to the system.”
+Set **`PUBLIC_APP_URL`** and **`APP_URL`** to your live Netlify URL (no trailing slash). New signups get confirmation links to `/auth/email-confirmed.html`, which shows **“You can now Login to the System.”**
 
 ## 5. Supabase SQL
 

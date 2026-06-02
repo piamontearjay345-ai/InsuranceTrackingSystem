@@ -3,6 +3,7 @@ import * as db from './supabase.mjs';
 import * as logs from './logs.mjs';
 import * as passwordReset from './passwordReset.mjs';
 import { sanitizeEmail, sanitizeString } from './security.mjs';
+import { emailConfirmRedirectUrl } from './site-url.mjs';
 import { establishSession, publicUser, roleRedirect, touchSession } from './session.mjs';
 import { env, envInt } from './env.mjs';
 
@@ -73,11 +74,6 @@ export async function confirmEmail(tokenHash, type = 'signup', code = '') {
     return { success: false, message: verify.error || 'Invalid or expired confirmation link.' };
   }
   return { success: true, message: 'Email confirmed successfully. You can now log in.' };
-}
-
-function emailConfirmRedirectUrl() {
-  const base = env('URL', env('APP_URL', '')).replace(/\/$/, '');
-  return base ? `${base}/auth/email-confirmed.html` : '/auth/email-confirmed.html';
 }
 
 function signupNeedsEmailConfirmation(signupData) {

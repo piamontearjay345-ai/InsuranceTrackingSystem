@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Config\Env;
 use App\Helpers\Security;
+use App\Helpers\SiteUrl;
 
 /**
  * Authentication: Supabase Auth + profile in public.users + PHP session.
@@ -46,7 +47,7 @@ class AuthService
                 'role' => $role,
             ],
             'options' => [
-                'emailRedirectTo' => $this->emailConfirmRedirectUrl(),
+                'emailRedirectTo' => SiteUrl::emailConfirmRedirectUrl(),
             ],
         ]);
 
@@ -104,15 +105,6 @@ class AuthService
             'success' => true,
             'message' => 'Email confirmed successfully. You can now log in.',
         ];
-    }
-
-    private function emailConfirmRedirectUrl(): string
-    {
-        $base = rtrim(Env::get('APP_URL', ''), '/');
-        if ($base === '') {
-            return '/auth/email-confirmed.html';
-        }
-        return $base . '/auth/email-confirmed.html';
     }
 
     private function signupNeedsEmailConfirmation(array $signupData): bool
