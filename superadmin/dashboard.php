@@ -21,10 +21,10 @@ $role = 'superadmin';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Superadmin Dashboard - Insurance Tracking</title>
-  <link rel="stylesheet" href="../styles.css?v=20260610">
-  <link rel="stylesheet" href="../assets/css/app.css?v=20260610">
-  <link rel="stylesheet" href="../assets/css/responsive.css?v=20260610">
-  <link rel="stylesheet" href="../assets/css/dashboard.css?v=20260610">
+  <link rel="stylesheet" href="../styles.css?v=20260612">
+  <link rel="stylesheet" href="../assets/css/app.css?v=20260612">
+  <link rel="stylesheet" href="../assets/css/responsive.css?v=20260612">
+  <link rel="stylesheet" href="../assets/css/dashboard.css?v=20260612">
 </head>
 <body class="page-dashboard-fullscreen dashboard-app">
   <div class="top-bar">
@@ -48,7 +48,7 @@ $role = 'superadmin';
   </header>
 
   <div class="dashboard-mobile-toolbar">
-    <button type="button" class="dashboard-menu-toggle" id="dashboard-menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="dashboard-sidebar">
+    <button type="button" class="dashboard-menu-toggle" id="dashboard-menu-toggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="dashboard-sidebar">
       <span class="dashboard-menu-toggle-bar"></span>
       <span class="dashboard-menu-toggle-bar"></span>
       <span class="dashboard-menu-toggle-bar"></span>
@@ -57,23 +57,23 @@ $role = 'superadmin';
   </div>
   <div class="dashboard-nav-overlay" id="dashboard-nav-overlay" hidden></div>
 
-  <div class="main-layout dashboard-main-layout">
-    <aside class="sidebar dashboard-sidebar" id="dashboard-sidebar">
-      <div class="nav-section">
-        <div class="nav-section-title">Super Admin Menu</div>
-        <a href="#" class="nav-item active" data-panel="overview"><span class="nav-icon">#</span><span>Dashboard</span></a>
-        <a href="#" class="nav-item" data-panel="students"><span class="nav-icon">S</span><span>Student Records</span></a>
-        <a href="#" class="nav-item" data-panel="beneficiary-requests"><span class="nav-icon">B</span><span>Beneficiary Update Requests</span></a>
-        <a href="#" class="nav-item" data-panel="admins"><span class="nav-icon">A</span><span>Admin Management</span></a>
-        <a href="#" class="nav-item" data-panel="users"><span class="nav-icon">U</span><span>User Management</span></a>
-        <a href="#" class="nav-item" data-panel="notifications"><span class="nav-icon">N</span><span>Notifications</span></a>
-        <a href="#" class="nav-item" data-panel="login-history"><span class="nav-icon">L</span><span>Login History</span></a>
-        <a href="#" class="nav-item" data-panel="activity"><span class="nav-icon">X</span><span>Activity Logs</span></a>
-        <a href="#" class="nav-item" data-panel="reports"><span class="nav-icon">R</span><span>Reports</span></a>
-        <a href="#" class="nav-item" data-panel="settings"><span class="nav-icon">S</span><span>Settings</span></a>
-      </div>
-    </aside>
+  <aside class="sidebar dashboard-sidebar" id="dashboard-sidebar" aria-hidden="true">
+    <div class="nav-section">
+      <div class="nav-section-title">Super Admin Menu</div>
+      <a href="#" class="nav-item active" data-panel="overview"><span class="nav-icon">#</span><span>Dashboard</span></a>
+      <a href="#" class="nav-item" data-panel="students"><span class="nav-icon">S</span><span>Student Records</span></a>
+      <a href="#" class="nav-item" data-panel="beneficiary-requests"><span class="nav-icon">B</span><span>Beneficiary Update Requests</span></a>
+      <a href="#" class="nav-item" data-panel="admins"><span class="nav-icon">A</span><span>Admin Management</span></a>
+      <a href="#" class="nav-item" data-panel="users"><span class="nav-icon">U</span><span>User Management</span></a>
+      <a href="#" class="nav-item" data-panel="notifications"><span class="nav-icon">N</span><span>Notifications</span></a>
+      <a href="#" class="nav-item" data-panel="login-history"><span class="nav-icon">L</span><span>Login History</span></a>
+      <a href="#" class="nav-item" data-panel="activity"><span class="nav-icon">X</span><span>Activity Logs</span></a>
+      <a href="#" class="nav-item" data-panel="reports"><span class="nav-icon">R</span><span>Reports</span></a>
+      <a href="#" class="nav-item" data-panel="settings"><span class="nav-icon">S</span><span>Settings</span></a>
+    </div>
+  </aside>
 
+  <div class="main-layout dashboard-main-layout">
     <div class="main-content">
       <div id="alert-box"></div>
       <header class="dashboard-page-header">
@@ -346,38 +346,15 @@ $role = 'superadmin';
     </div>
   </div>
 
-  <nav class="dashboard-bottom-nav dashboard-bottom-nav--many" id="dashboard-bottom-nav" aria-label="Super Admin navigation">
-    <a href="#" class="dashboard-bottom-nav-item active" data-panel="overview" title="Dashboard">
-      <span class="dashboard-bottom-nav-icon" aria-hidden="true">#</span>
-      <span class="dashboard-bottom-nav-label">Home</span>
-    </a>
-    <a href="#" class="dashboard-bottom-nav-item" data-panel="students" title="Student Records">
-      <span class="dashboard-bottom-nav-icon" aria-hidden="true">S</span>
-      <span class="dashboard-bottom-nav-label">Students</span>
-    </a>
-    <a href="#" class="dashboard-bottom-nav-item" data-panel="users" title="User Management">
-      <span class="dashboard-bottom-nav-icon" aria-hidden="true">U</span>
-      <span class="dashboard-bottom-nav-label">Users</span>
-    </a>
-    <a href="#" class="dashboard-bottom-nav-item" data-panel="admins" title="Admin Management">
-      <span class="dashboard-bottom-nav-icon" aria-hidden="true">A</span>
-      <span class="dashboard-bottom-nav-label">Admins</span>
-    </a>
-    <button type="button" class="dashboard-bottom-nav-item dashboard-bottom-nav-more" data-action="open-menu" title="More menu">
-      <span class="dashboard-bottom-nav-icon" aria-hidden="true">≡</span>
-      <span class="dashboard-bottom-nav-label">More</span>
-    </button>
-  </nav>
-
   <div class="loading-overlay" id="loading"><div class="loading-spinner"></div></div>
 
-  <script src="../assets/js/api.js?v=20260610"></script>
-  <script src="../assets/js/auth.js?v=20260610"></script>
+  <script src="../assets/js/api.js?v=20260612"></script>
+  <script src="../assets/js/auth.js?v=20260612"></script>
   <script>
     window.SUPERADMIN_PAGE = true;
   </script>
-  <script src="../assets/js/dashboard-utils.js?v=20260610"></script>
-  <script src="../assets/js/dashboard-mobile.js?v=20260610"></script>
-  <script src="../assets/js/admin-dashboard.js?v=20260610"></script>
+  <script src="../assets/js/dashboard-utils.js?v=20260612"></script>
+  <script src="../assets/js/dashboard-mobile.js?v=20260612"></script>
+  <script src="../assets/js/admin-dashboard.js?v=20260612"></script>
 </body>
 </html>
