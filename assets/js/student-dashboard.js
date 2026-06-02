@@ -15,9 +15,12 @@
   }
 
   function activatePanel(panel) {
-    document.querySelectorAll('.sidebar .nav-item').forEach((l) => l.classList.remove('active'));
-    const activeLink = document.querySelector(`.sidebar .nav-item[data-panel="${cssEscape(panel)}"]`);
-    if (activeLink) activeLink.classList.add('active');
+    document.querySelectorAll('.sidebar .nav-item, .dashboard-bottom-nav-item').forEach((l) => {
+      l.classList.remove('active');
+    });
+    document.querySelectorAll(`.sidebar .nav-item[data-panel="${cssEscape(panel)}"], .dashboard-bottom-nav-item[data-panel="${cssEscape(panel)}"]`).forEach((el) => {
+      el.classList.add('active');
+    });
 
     document.querySelectorAll('[id^="panel-"]').forEach((p) => p.classList.add('hidden'));
     const panelEl = document.getElementById('panel-' + panel);
@@ -31,10 +34,11 @@
     if (panel === 'notifications') loadNotifications();
   }
 
-  document.querySelectorAll('.sidebar .nav-item[data-panel]').forEach((link) => {
+  document.querySelectorAll('.sidebar .nav-item[data-panel], .dashboard-bottom-nav-item[data-panel]').forEach((link) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       activatePanel(link.dataset.panel);
+      if (typeof window.closeDashboardMenu === 'function') window.closeDashboardMenu();
     });
   });
 
@@ -92,7 +96,7 @@
 
     try {
       const res = await API.get('/notifications');
-      const rows = res.data.notifications || [];
+      const rows = listFrom(res, 'notifications');
       const countEl = document.getElementById('notify-count');
       if (countEl) countEl.textContent = String(rows.length);
 

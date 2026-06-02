@@ -31,6 +31,10 @@ class NotificationController
             false,
             $token
         );
-        Response::success(['notifications' => $res['data'] ?? []]);
+        if (!$res['ok']) {
+            Response::error($res['error'] ?? 'Failed to load notifications.', $res['status'] ?: 500);
+        }
+        $rows = is_array($res['data'] ?? null) ? $res['data'] : [];
+        Response::success(['notifications' => $rows]);
     }
 }

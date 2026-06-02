@@ -22,9 +22,12 @@
   }
 
   function activatePanel(panel) {
-    document.querySelectorAll('.sidebar .nav-item').forEach(l => l.classList.remove('active'));
-    const activeLink = document.querySelector(`.sidebar .nav-item[data-panel="${cssEscape(panel)}"]`);
-    if (activeLink) activeLink.classList.add('active');
+    document.querySelectorAll('.sidebar .nav-item, .dashboard-bottom-nav-item[data-panel]').forEach((l) => {
+      l.classList.remove('active');
+    });
+    document.querySelectorAll(
+      `.sidebar .nav-item[data-panel="${cssEscape(panel)}"], .dashboard-bottom-nav-item[data-panel="${cssEscape(panel)}"]`
+    ).forEach((el) => el.classList.add('active'));
     document.querySelectorAll('[id^="panel-"]').forEach(p => p.classList.add('hidden'));
     const panelEl = document.getElementById('panel-' + panel);
     if (panelEl) panelEl.classList.remove('hidden');
@@ -40,10 +43,11 @@
     if (panel === 'settings') loadSettings();
   }
 
-  document.querySelectorAll('.sidebar .nav-item[data-panel]').forEach(link => {
+  document.querySelectorAll('.sidebar .nav-item[data-panel], .dashboard-bottom-nav-item[data-panel]').forEach((link) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       activatePanel(link.dataset.panel);
+      if (typeof window.closeDashboardMenu === 'function') window.closeDashboardMenu();
     });
   });
 
@@ -151,7 +155,7 @@
       const res = await API.get(q);
       const tbody = document.getElementById('students-tbody');
       const pagination = document.getElementById('students-pagination');
-      const rows = res.data.students || [];
+      const rows = listFrom(res, 'students');
       if (!rows.length) {
         tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--evsu-gray)">No records found.</td></tr>';
         if (pagination) pagination.innerHTML = '';
@@ -230,7 +234,7 @@
     try {
       const res = await API.get(q);
       const tbody = document.getElementById('users-tbody');
-      const rows = res.data.users || [];
+      const rows = listFrom(res, 'users');
       tbody.innerHTML = rows.map(userRow).join('') || '<tr><td colspan="6">No users found.</td></tr>';
       tbody.querySelectorAll('.btn-save-user').forEach(btn => btn.addEventListener('click', () => saveUser(btn.dataset.id)));
       tbody.querySelectorAll('.btn-toggle-user').forEach(btn => btn.addEventListener('click', () => toggleUser(btn.dataset.id, btn.dataset.deleted === 'true')));
@@ -247,7 +251,7 @@
     try {
       const res = await API.get(q);
       const tbody = document.getElementById('beneficiary-requests-tbody');
-      const rows = res.data.students || [];
+      const rows = listFrom(res, 'students');
       tbody.innerHTML = rows.map(student => {
         const status = student.beneficiaries?.[0]?.status || 'Not Updated';
         return `<tr>
@@ -313,7 +317,7 @@
     try {
       const res = await API.get(q);
       const tbody = document.getElementById('admins-tbody');
-      const rows = res.data.users || [];
+      const rows = listFrom(res, 'users');
       tbody.innerHTML = rows.map(userRow).join('') || '<tr><td colspan="6">No admin accounts found.</td></tr>';
       tbody.querySelectorAll('.btn-save-user').forEach(btn => btn.addEventListener('click', () => saveUser(btn.dataset.id)));
       tbody.querySelectorAll('.btn-toggle-user').forEach(btn => btn.addEventListener('click', () => toggleUser(btn.dataset.id, btn.dataset.deleted === 'true')));
@@ -386,7 +390,7 @@
     let page = 1;
     for (;;) {
       const res = await API.get(`${path}${path.includes('?') ? '&' : '?'}limit=${pageSize}&page=${page}`);
-      const batch = res.data[listKey] || [];
+      const batch = listFrom(res, listKey);
       all.push(...batch);
       if (batch.length < pageSize) break;
       page += 1;
@@ -504,7 +508,7 @@
     try {
       const res = await API.get('/admin/notifications');
       const tbody = document.getElementById('notifications-tbody');
-      const rows = res.data.notifications || [];
+      const rows = listFrom(res, 'notifications');
       tbody.innerHTML = rows.map(n => `<tr>
         <td>${esc(n.users?.fullname || n.user_id)}</td>
         <td>${esc(n.title)}</td>
@@ -520,7 +524,7 @@
     try {
       const res = await API.get('/admin/failed-notifications');
       const tbody = document.getElementById('failed-tbody');
-      const rows = res.data.failed || [];
+      const rows = listFrom(res, 'failed');
       tbody.innerHTML = rows.map(f => `<tr>
         <td>${esc(f.recipient_email)}</td>
         <td>${esc(f.error_reason)}</td>
@@ -550,7 +554,7 @@
     try {
       const res = await API.get('/admin/login-history');
       const tbody = document.getElementById('login-tbody');
-      const rows = res.data.history || [];
+      const rows = listFrom(res, 'history');
       tbody.innerHTML = rows.map(h => `<tr>
         <td>${esc(h.email)}</td>
         <td>${esc(h.login_status)}</td>
@@ -567,7 +571,7 @@
     try {
       const res = await API.get('/admin/activity-logs');
       const tbody = document.getElementById('activity-tbody');
-      const rows = res.data.logs || [];
+      const rows = listFrom(res, 'logs');
       tbody.innerHTML = rows.map(l => `<tr>
         <td>${esc(l.action)}</td>
         <td>${esc(l.affected_record)}</td>

@@ -3,6 +3,11 @@ import * as auth from './auth.mjs';
 import * as email from './email.mjs';
 import * as logs from './logs.mjs';
 import { sanitizeEmail, sanitizeString } from './security.mjs';
+
+function asArray(data) {
+  return Array.isArray(data) ? data : [];
+}
+
 export async function stats(user) {
   const allowed = ['admin', 'superadmin'];
   if (!user || !allowed.includes(user.role)) {
@@ -55,7 +60,8 @@ export async function students(query) {
   q += hasStatusFilter ? '&limit=10000' : `&limit=${limit}&offset=${offset}`;
 
   const res = await db.from('users', 'GET', null, q, true);
-  let rows = res.data || [];
+  if (!res.ok) return { error: res.error || 'Failed to load students.', status: res.status || 500 };
+  let rows = asArray(res.data);
 
   if (hasStatusFilter) {
     rows = rows.filter((row) => {
@@ -80,7 +86,8 @@ export async function notifications(query) {
     `select=*,users(fullname,email)&order=created_at.desc&limit=${limit}&offset=${offset}`,
     true
   );
-  return { data: { notifications: res.data || [] } };
+  if (!res.ok) return { error: res.error || 'Failed to load notifications.', status: res.status || 500 };
+  return { data: { notifications: asArray(res.data) } };
 }
 
 export async function beneficiaryUpdateRequests(query) {
@@ -92,7 +99,8 @@ export async function beneficiaryUpdateRequests(query) {
     q += `&or=(fullname.ilike.${s},email.ilike.${s},student_id.ilike.${s},username.ilike.${s})`;
   }
   const res = await db.from('users', 'GET', null, q, true);
-  return { data: { students: res.data || [] } };
+  if (!res.ok) return { error: res.error || 'Failed to load students.', status: res.status || 500 };
+  return { data: { students: asArray(res.data) } };
 }
 
 export async function sendBeneficiaryUpdateRequest(admin, body, event) {
@@ -130,7 +138,8 @@ export async function sendAllBeneficiaryUpdateRequests(admin, event) {
 
 export async function failedNotifications() {
   const res = await db.from('failed_notifications', 'GET', null, 'select=*&order=created_at.desc&limit=50', true);
-  return { data: { failed: res.data || [] } };
+  if (!res.ok) return { error: res.error || 'Failed to load failed notifications.', status: res.status || 500 };
+  return { data: { failed: asArray(res.data) } };
 }
 
 export async function retryNotification(admin, body, event) {
@@ -145,13 +154,15 @@ export async function retryNotification(admin, body, event) {
 export async function loginHistory(query) {
   const page = Math.max(1, parseInt(query.page, 10) || 1);
   const res = await logs.getLoginHistory(page);
-  return { data: { history: res.data || [] } };
+  if (!res.ok) return { error: res.error || 'Failed to load login history.', status: res.status || 500 };
+  return { data: { history: asArray(res.data) } };
 }
 
 export async function activityLogs(query) {
   const page = Math.max(1, parseInt(query.page, 10) || 1);
   const res = await logs.getActivityLogs(page);
-  return { data: { logs: res.data || [] } };
+  if (!res.ok) return { error: res.error || 'Failed to load activity logs.', status: res.status || 500 };
+  return { data: { logs: asArray(res.data) } };
 }
 
 export async function users(query) {
@@ -169,7 +180,8 @@ export async function users(query) {
   }
 
   const res = await db.from('users', 'GET', null, q, true);
-  return { data: { users: res.data || [], page, limit } };
+  if (!res.ok) return { error: res.error || 'Failed to load users.', status: res.status || 500 };
+  return { data: { users: asArray(res.data), page, limit } };
 }
 
 export async function createUser(actor, body, event) {

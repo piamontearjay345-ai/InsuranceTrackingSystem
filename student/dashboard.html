@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Dashboard - Insurance Tracking</title>
-  <link rel="stylesheet" href="../styles.css?v=20260608">
-  <link rel="stylesheet" href="../assets/css/app.css?v=20260608">
-  <link rel="stylesheet" href="../assets/css/responsive.css?v=20260608">
-  <link rel="stylesheet" href="../assets/css/dashboard.css?v=20260608">
+  <link rel="stylesheet" href="../styles.css?v=20260609">
+  <link rel="stylesheet" href="../assets/css/app.css?v=20260609">
+  <link rel="stylesheet" href="../assets/css/responsive.css?v=20260609">
+  <link rel="stylesheet" href="../assets/css/dashboard.css?v=20260609">
 </head>
 <body class="page-dashboard-fullscreen dashboard-app">
   <div class="top-bar">
@@ -122,11 +122,27 @@
     </div>
   </div>
 
+  <nav class="dashboard-bottom-nav" id="dashboard-bottom-nav" aria-label="Student navigation">
+    <a href="#" class="dashboard-bottom-nav-item active" data-panel="overview" title="Dashboard">
+      <span class="dashboard-bottom-nav-icon" aria-hidden="true">#</span>
+      <span class="dashboard-bottom-nav-label">Home</span>
+    </a>
+    <a href="#" class="dashboard-bottom-nav-item" data-panel="beneficiary" title="Beneficiary Info">
+      <span class="dashboard-bottom-nav-icon" aria-hidden="true">B</span>
+      <span class="dashboard-bottom-nav-label">Beneficiary</span>
+    </a>
+    <a href="#" class="dashboard-bottom-nav-item" data-panel="notifications" title="Notifications">
+      <span class="dashboard-bottom-nav-icon" aria-hidden="true">N</span>
+      <span class="dashboard-bottom-nav-label">Alerts</span>
+    </a>
+  </nav>
+
   <div class="loading-overlay" id="loading"><div class="loading-spinner"></div></div>
 
-  <script src="../assets/js/api.js?v=20260608"></script>
-  <script src="../assets/js/auth.js?v=20260608"></script>
-  <script src="../assets/js/dashboard-mobile.js?v=20260608"></script>
-  <script src="../assets/js/student-dashboard.js?v=20260608"></script>
+  <script src="../assets/js/api.js?v=20260609"></script>
+  <script src="../assets/js/auth.js?v=20260609"></script>
+  <script src="../assets/js/dashboard-utils.js?v=20260609"></script>
+  <script src="../assets/js/dashboard-mobile.js?v=20260609"></script>
+  <script src="../assets/js/student-dashboard.js?v=20260609"></script>
 </body>
 </html>

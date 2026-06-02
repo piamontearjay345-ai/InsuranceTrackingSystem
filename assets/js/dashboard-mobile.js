@@ -39,6 +39,13 @@
     });
   });
 
+  document.querySelectorAll('[data-action="open-menu"]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openMenu();
+    });
+  });
+
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeMenu();
   });

@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard - Insurance Tracking</title>
-  <link rel="stylesheet" href="../styles.css?v=20260608">
-  <link rel="stylesheet" href="../assets/css/app.css?v=20260608">
-  <link rel="stylesheet" href="../assets/css/responsive.css?v=20260608">
-  <link rel="stylesheet" href="../assets/css/dashboard.css?v=20260608">
+  <link rel="stylesheet" href="../styles.css?v=20260610">
+  <link rel="stylesheet" href="../assets/css/app.css?v=20260610">
+  <link rel="stylesheet" href="../assets/css/responsive.css?v=20260610">
+  <link rel="stylesheet" href="../assets/css/dashboard.css?v=20260610">
 </head>
 <body class="page-dashboard-fullscreen dashboard-app">
   <div class="top-bar">
@@ -80,7 +80,7 @@
 
       <div id="panel-students" class="hidden">
         <div class="toolbar">
-          <input type="search" id="search-students" placeholder="Search name, email, ID...">
+          <input type="search" id="search-students" placeholder="Search students…" autocomplete="off">
           <select id="filter-status">
             <option value="">All statuses</option>
             <option value="Updated">Updated</option>
@@ -110,7 +110,7 @@
 
       <div id="panel-users" class="hidden">
         <div class="toolbar">
-          <input type="search" id="search-users" placeholder="Search users...">
+          <input type="search" id="search-users" placeholder="Search users…" autocomplete="off">
           <select id="filter-user-role">
             <option value="">All roles</option>
             <option value="student">Students</option>
@@ -138,7 +138,7 @@
 
       <div id="panel-beneficiary-requests" class="hidden">
         <div class="toolbar">
-          <input type="search" id="search-beneficiary-requests" placeholder="Search student, email, ID...">
+          <input type="search" id="search-beneficiary-requests" placeholder="Search students…" autocomplete="off">
           <button type="button" class="btn btn-primary" id="btn-beneficiary-request-search">Search</button>
           <button type="button" class="btn btn-primary" id="btn-send-all-beneficiary-requests">Send Notification to All</button>
         </div>
@@ -228,11 +228,35 @@
     </div>
   </div>
 
+  <nav class="dashboard-bottom-nav dashboard-bottom-nav--many" id="dashboard-bottom-nav" aria-label="Admin navigation">
+    <a href="#" class="dashboard-bottom-nav-item active" data-panel="overview" title="Dashboard">
+      <span class="dashboard-bottom-nav-icon" aria-hidden="true">#</span>
+      <span class="dashboard-bottom-nav-label">Home</span>
+    </a>
+    <a href="#" class="dashboard-bottom-nav-item" data-panel="students" title="Student Records">
+      <span class="dashboard-bottom-nav-icon" aria-hidden="true">S</span>
+      <span class="dashboard-bottom-nav-label">Students</span>
+    </a>
+    <a href="#" class="dashboard-bottom-nav-item" data-panel="beneficiary-requests" title="Beneficiary Update Requests">
+      <span class="dashboard-bottom-nav-icon" aria-hidden="true">B</span>
+      <span class="dashboard-bottom-nav-label">Requests</span>
+    </a>
+    <a href="#" class="dashboard-bottom-nav-item" data-panel="notifications" title="Notifications">
+      <span class="dashboard-bottom-nav-icon" aria-hidden="true">N</span>
+      <span class="dashboard-bottom-nav-label">Alerts</span>
+    </a>
+    <button type="button" class="dashboard-bottom-nav-item dashboard-bottom-nav-more" data-action="open-menu" title="More menu">
+      <span class="dashboard-bottom-nav-icon" aria-hidden="true">≡</span>
+      <span class="dashboard-bottom-nav-label">More</span>
+    </button>
+  </nav>
+
   <div class="loading-overlay" id="loading"><div class="loading-spinner"></div></div>
 
-  <script src="../assets/js/api.js?v=20260608"></script>
-  <script src="../assets/js/auth.js?v=20260608"></script>
-  <script src="../assets/js/dashboard-mobile.js?v=20260608"></script>
-  <script src="../assets/js/admin-dashboard.js?v=20260608"></script>
+  <script src="../assets/js/api.js?v=20260610"></script>
+  <script src="../assets/js/auth.js?v=20260610"></script>
+  <script src="../assets/js/dashboard-utils.js?v=20260610"></script>
+  <script src="../assets/js/dashboard-mobile.js?v=20260610"></script>
+  <script src="../assets/js/admin-dashboard.js?v=20260610"></script>
 </body>
 </html>

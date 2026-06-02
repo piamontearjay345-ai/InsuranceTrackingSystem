@@ -390,36 +390,36 @@
     padding: 14px;
   }
 
-  .sidebar {
+  .main-layout:not(.dashboard-main-layout) .sidebar {
     flex: none;
     width: 100%;
     padding: 16px 0;
     border-radius: 10px;
   }
 
-  .sidebar::after {
+  .main-layout:not(.dashboard-main-layout) .sidebar::after {
     display: none;
   }
 
-  .nav-section {
+  .main-layout:not(.dashboard-main-layout) .nav-section {
     padding: 0 14px;
     margin-bottom: 0;
   }
 
-  .nav-section-title {
+  .main-layout:not(.dashboard-main-layout) .nav-section-title {
     margin-bottom: 10px;
   }
 
-  .nav-item {
+  .main-layout:not(.dashboard-main-layout) .nav-item {
     padding: 12px 14px;
     margin: 5px 0;
   }
 
-  .nav-item:hover {
+  .main-layout:not(.dashboard-main-layout) .nav-item:hover {
     transform: none;
   }
 
-  .main-content {
+  .main-layout:not(.dashboard-main-layout) .main-content {
     width: 100%;
     padding: 24px 10px 10px;
   }
@@ -482,20 +482,20 @@
     border-radius: 0 !important;
   }
 
-  .main-layout {
+  .main-layout:not(.dashboard-main-layout) {
     width: calc(100% - 20px);
     margin: 10px auto 20px;
     padding: 10px;
     border-radius: 10px;
   }
 
-  .sidebar {
+  .main-layout:not(.dashboard-main-layout) .sidebar {
     position: sticky;
     top: 0;
     z-index: 20;
   }
 
-  .nav-section {
+  .main-layout:not(.dashboard-main-layout) .nav-section {
     display: flex;
     gap: 8px;
     overflow-x: auto;
@@ -503,23 +503,23 @@
     scrollbar-width: thin;
   }
 
-  .nav-section-title {
+  .main-layout:not(.dashboard-main-layout) .nav-section-title {
     display: none;
   }
 
-  .nav-item {
+  .main-layout:not(.dashboard-main-layout) .nav-item {
     flex: 0 0 auto;
     min-height: 44px;
     white-space: nowrap;
     margin: 0;
   }
 
-  .nav-icon {
+  .main-layout:not(.dashboard-main-layout) .nav-icon {
     margin-right: 8px;
     font-size: 1rem;
   }
 
-  .main-content {
+  .main-layout:not(.dashboard-main-layout) .main-content {
     padding: 18px 2px 4px;
   }
 
@@ -544,15 +544,15 @@
     margin: 10px 0;
   }
 
-  .toolbar {
+  .main-layout:not(.dashboard-main-layout) .toolbar {
     align-items: stretch;
     gap: 10px;
     padding: 0 4px;
   }
 
-  .toolbar input,
-  .toolbar select,
-  .toolbar .btn {
+  .main-layout:not(.dashboard-main-layout) .toolbar input,
+  .main-layout:not(.dashboard-main-layout) .toolbar select,
+  .main-layout:not(.dashboard-main-layout) .toolbar .btn {
     width: 100%;
     min-width: 0;
   }

@@ -209,7 +209,11 @@ export async function handle(event) {
         false,
         sess.access_token
       );
-      return response.success({ notifications: res.data || [] });
+      const notifications = res.ok && Array.isArray(res.data) ? res.data : [];
+      if (!res.ok) {
+        return response.error(res.error || 'Failed to load notifications.', res.status || 500);
+      }
+      return response.success({ notifications });
     }
 
     // Admin
@@ -225,6 +229,7 @@ export async function handle(event) {
       const authCheck = requireAuth(sess, ['admin', 'superadmin']);
       if (authCheck.error) return authCheck.error;
       const result = await admin.students(event.queryStringParameters || {});
+      if (result.error) return response.error(result.error, result.status);
       return response.success(result.data);
     }
 
@@ -232,6 +237,7 @@ export async function handle(event) {
       const authCheck = requireAuth(sess, ['admin', 'superadmin']);
       if (authCheck.error) return authCheck.error;
       const result = await admin.beneficiaryUpdateRequests(event.queryStringParameters || {});
+      if (result.error) return response.error(result.error, result.status);
       return response.success(result.data);
     }
 
@@ -255,6 +261,7 @@ export async function handle(event) {
       const authCheck = requireAuth(sess, ['admin', 'superadmin']);
       if (authCheck.error) return authCheck.error;
       const result = await admin.notifications(event.queryStringParameters || {});
+      if (result.error) return response.error(result.error, result.status);
       return response.success(result.data);
     }
 
@@ -262,6 +269,7 @@ export async function handle(event) {
       const authCheck = requireAuth(sess, ['admin', 'superadmin']);
       if (authCheck.error) return authCheck.error;
       const result = await admin.failedNotifications();
+      if (result.error) return response.error(result.error, result.status);
       return response.success(result.data);
     }
 
@@ -277,6 +285,7 @@ export async function handle(event) {
       const authCheck = requireAuth(sess, ['admin', 'superadmin']);
       if (authCheck.error) return authCheck.error;
       const result = await admin.loginHistory(event.queryStringParameters || {});
+      if (result.error) return response.error(result.error, result.status);
       return response.success(result.data);
     }
 
@@ -284,6 +293,7 @@ export async function handle(event) {
       const authCheck = requireAuth(sess, ['admin', 'superadmin']);
       if (authCheck.error) return authCheck.error;
       const result = await admin.activityLogs(event.queryStringParameters || {});
+      if (result.error) return response.error(result.error, result.status);
       return response.success(result.data);
     }
 
@@ -291,6 +301,7 @@ export async function handle(event) {
       const authCheck = requireAuth(sess, 'superadmin');
       if (authCheck.error) return authCheck.error;
       const result = await admin.users(event.queryStringParameters || {});
+      if (result.error) return response.error(result.error, result.status);
       return response.success(result.data);
     }
 

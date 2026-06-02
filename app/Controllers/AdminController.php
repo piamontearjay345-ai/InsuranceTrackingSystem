@@ -23,6 +23,12 @@ class AdminController
         $this->logs = new LogService();
     }
 
+    /** @return list<mixed> */
+    private function listRows(array $res): array
+    {
+        return is_array($res['data'] ?? null) ? $res['data'] : [];
+    }
+
     public function stats(): void
     {
         // Manual auth check so we can provide diagnostic info when requests are unauthorized (helpful during local debugging).
@@ -166,7 +172,10 @@ class AdminController
         $query .= $hasStatusFilter ? '&limit=10000' : '&limit=' . $limit . '&offset=' . $offset;
 
         $res = $this->db->from('users', 'GET', null, $query, true);
-        $rows = $res['data'] ?? [];
+        if (!$res['ok']) {
+            Response::error($res['error'] ?? 'Failed to load students.', $res['status'] ?: 500);
+        }
+        $rows = $this->listRows($res);
 
         if ($hasStatusFilter) {
             $rows = array_values(array_filter($rows, function ($row) use ($statusFilter) {
@@ -198,7 +207,10 @@ class AdminController
             'select=*,users(fullname,email)&order=created_at.desc&limit=' . $limit . '&offset=' . $offset,
             true
         );
-        Response::success(['notifications' => $res['data'] ?? []]);
+        if (!$res['ok']) {
+            Response::error($res['error'] ?? 'Failed to load notifications.', $res['status'] ?: 500);
+        }
+        Response::success(['notifications' => $this->listRows($res)]);
     }
 
     public function beneficiaryUpdateRequests(): void
@@ -214,7 +226,10 @@ class AdminController
         }
 
         $res = $this->db->from('users', 'GET', null, $query, true);
-        Response::success(['students' => $res['data'] ?? []]);
+        if (!$res['ok']) {
+            Response::error($res['error'] ?? 'Failed to load beneficiary requests.', $res['status'] ?: 500);
+        }
+        Response::success(['students' => $this->listRows($res)]);
     }
 
     public function sendBeneficiaryUpdateRequest(): void
@@ -274,7 +289,10 @@ class AdminController
     {
         AuthMiddleware::requireAuth(['admin', 'superadmin']);
         $res = $this->db->from('failed_notifications', 'GET', null, 'select=*&order=created_at.desc&limit=50', true);
-        Response::success(['failed' => $res['data'] ?? []]);
+        if (!$res['ok']) {
+            Response::error($res['error'] ?? 'Failed to load failed notifications.', $res['status'] ?: 500);
+        }
+        Response::success(['failed' => $this->listRows($res)]);
     }
 
     public function retryNotification(): void
@@ -299,7 +317,10 @@ class AdminController
         AuthMiddleware::requireAuth(['admin', 'superadmin']);
         $page = max(1, (int) ($_GET['page'] ?? 1));
         $res = $this->logs->getLoginHistory($page);
-        Response::success(['history' => $res['data'] ?? []]);
+        if (!$res['ok']) {
+            Response::error($res['error'] ?? 'Failed to load login history.', $res['status'] ?: 500);
+        }
+        Response::success(['history' => $this->listRows($res)]);
     }
 
     public function activityLogs(): void
@@ -307,7 +328,10 @@ class AdminController
         AuthMiddleware::requireAuth(['admin', 'superadmin']);
         $page = max(1, (int) ($_GET['page'] ?? 1));
         $res = $this->logs->getActivityLogs($page);
-        Response::success(['logs' => $res['data'] ?? []]);
+        if (!$res['ok']) {
+            Response::error($res['error'] ?? 'Failed to load activity logs.', $res['status'] ?: 500);
+        }
+        Response::success(['logs' => $this->listRows($res)]);
     }
 
     public function users(): void
@@ -329,8 +353,11 @@ class AdminController
         }
 
         $res = $this->db->from('users', 'GET', null, $query, true);
+        if (!$res['ok']) {
+            Response::error($res['error'] ?? 'Failed to load users.', $res['status'] ?: 500);
+        }
         Response::success([
-            'users' => $res['data'] ?? [],
+            'users' => $this->listRows($res),
             'page' => $page,
             'limit' => $limit,
         ]);
