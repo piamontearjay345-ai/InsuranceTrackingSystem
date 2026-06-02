@@ -1,0 +1,31 @@
+[build]
+  command = "npm install"
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/api/index.php"
+  to = "/.netlify/functions/api"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/auth/google-start.php"
+  to = "/.netlify/functions/google-start"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/auth/google-callback.php"
+  to = "/.netlify/functions/google-callback"
+  status = 200
+  force = true

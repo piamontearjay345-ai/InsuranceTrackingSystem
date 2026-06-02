@@ -1,21 +1,22 @@
 /**
- * API client - auto-detects project base path; works without Apache rewrite.
+ * API client — XAMPP (PHP) or Netlify Functions.
  */
 const API = (() => {
-  /** e.g. /InsuranceTrackingSystem/api/index.php */
   const BASE = (() => {
     const pathname = window.location.pathname;
     const marker = '/InsuranceTrackingSystem';
     if (pathname.includes(marker)) {
       return marker + '/api/index.php';
     }
-    // student/dashboard.html or admin/dashboard.html -> go up to project root
-    const match = pathname.match(/^(.+?)\/(student|admin)\//);
-    if (match) {
-      return match[1] + '/api/index.php';
+    // Netlify (site root or nested deploy)
+    const host = window.location.hostname;
+    if (host.endsWith('.netlify.app') || host.endsWith('.netlify.live')) {
+      return '/.netlify/functions/api';
     }
-    const dir = pathname.replace(/\/[^/]*$/, '') || '';
-    return (dir || '') + '/api/index.php';
+    if (window.location.port === '8888' || window.location.port === '8889') {
+      return '/.netlify/functions/api';
+    }
+    return '/.netlify/functions/api';
   })();
 
   let csrfToken = null;
@@ -33,11 +34,10 @@ const API = (() => {
     try {
       return JSON.parse(text);
     } catch (e) {
-      // Log raw response preview to help debug when HTML or PHP warnings are returned
       const preview = text.replace(/\s+/g, ' ').slice(0, 120);
       console.error('API.parseResponse: failed to parse JSON. Raw response preview:', preview);
       throw new Error(
-        'Server returned HTML instead of JSON. Check that Apache/PHP is running and the API URL is correct. Response: ' + preview
+        'Server returned HTML instead of JSON. Check API / environment variables. Response: ' + preview
       );
     }
   }

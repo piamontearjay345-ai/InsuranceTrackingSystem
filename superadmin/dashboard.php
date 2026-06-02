@@ -21,10 +21,10 @@ $role = 'superadmin';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Superadmin Dashboard - Insurance Tracking</title>
-  <link rel="stylesheet" href="../styles.css">
-  <link rel="stylesheet" href="../assets/css/app.css">
-  <link rel="stylesheet" href="../assets/css/responsive.css">
-  <link rel="stylesheet" href="../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../styles.css?v=20260605">
+  <link rel="stylesheet" href="../assets/css/app.css?v=20260605">
+  <link rel="stylesheet" href="../assets/css/responsive.css?v=20260605">
+  <link rel="stylesheet" href="../assets/css/dashboard.css?v=20260605">
 </head>
 <body class="page-dashboard-fullscreen dashboard-app">
   <div class="top-bar">
@@ -338,11 +338,11 @@ $role = 'superadmin';
 
   <div class="loading-overlay" id="loading"><div class="loading-spinner"></div></div>
 
-  <script src="../assets/js/api.js"></script>
-  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/api.js?v=20260605"></script>
+  <script src="../assets/js/auth.js?v=20260605"></script>
   <script>
     window.SUPERADMIN_PAGE = true;
   </script>
-  <script src="../assets/js/admin-dashboard.js?v=20260604"></script>
+  <script src="../assets/js/admin-dashboard.js?v=20260605"></script>
 </body>
 </html>

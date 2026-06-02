@@ -2,6 +2,17 @@
  * Authentication helpers for login, register, and dashboards.
  */
 
+function appBase() {
+  const pathname = window.location.pathname;
+  return pathname.includes('/InsuranceTrackingSystem') ? '/InsuranceTrackingSystem' : '';
+}
+
+function appPath(subpath) {
+  const base = appBase();
+  const p = String(subpath || '').replace(/^\//, '');
+  return base ? `${base}/${p}` : `/${p}`;
+}
+
 function showAlert(container, message, type = 'danger') {
   if (!container) return;
   const cls = type === 'success' ? 'alert-success' : (type === 'info' ? 'alert-info' : 'alert-danger');
@@ -21,17 +32,18 @@ async function requireAuth(role) {
     const user = res.data.user;
     const allowed = Array.isArray(role) ? role : (role ? [role] : []);
     if (allowed.length && !allowed.includes(user.role)) {
-      const target = user.role === 'superadmin' || user.role === 'super_admin'
-        ? '/InsuranceTrackingSystem/superadmin/dashboard.php'
-        : (user.role === 'admin'
-          ? '/InsuranceTrackingSystem/admin/dashboard.html'
-          : '/InsuranceTrackingSystem/student/dashboard.html');
+      const target =
+        user.role === 'superadmin' || user.role === 'super_admin'
+          ? appPath('superadmin/dashboard.html')
+          : user.role === 'admin'
+            ? appPath('admin/dashboard.html')
+            : appPath('student/dashboard.html');
       window.location.href = target;
       return null;
     }
     return user;
   } catch {
-    window.location.href = '/InsuranceTrackingSystem/login.html';
+    window.location.href = appPath('login.html');
     return null;
   }
 }
@@ -41,5 +53,5 @@ async function logout() {
     if (!API.hasCsrf()) await API.init();
     await API.post('/auth/logout', {});
   } catch (_) { /* ignore */ }
-  window.location.href = '/InsuranceTrackingSystem/login.html';
+  window.location.href = appPath('login.html');
 }

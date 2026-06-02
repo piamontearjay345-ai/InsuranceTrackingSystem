@@ -15,7 +15,7 @@
 
   function showDashboardError(err, fallback = 'Request failed.') {
     if (err?.status === 401) {
-      window.location.href = '/InsuranceTrackingSystem/login.html';
+      window.location.href = typeof appPath === 'function' ? appPath('login.html') : '/login.html';
       return;
     }
     showAlert(document.getElementById('alert-box'), err?.message || fallback, 'danger');

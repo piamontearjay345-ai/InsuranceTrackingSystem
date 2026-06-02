@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Signing in…</title>
-  <link rel="stylesheet" href="../styles.css">
-  <link rel="stylesheet" href="../assets/css/app.css">
-  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <link rel="stylesheet" href="../styles.css?v=20260605">
+  <link rel="stylesheet" href="../assets/css/app.css?v=20260605">
+  <link rel="stylesheet" href="../assets/css/responsive.css?v=20260605">
 </head>
 <body class="auth-body">
   <div class="auth-wrapper">
@@ -18,8 +18,8 @@
       </div>
     </div>
   </div>
-  <script src="../assets/js/api.js"></script>
-  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/api.js?v=20260605"></script>
+  <script src="../assets/js/auth.js?v=20260605"></script>
   <script>
     (async function () {
       const alertBox = document.getElementById('alert-box');
@@ -40,7 +40,7 @@
           access_token: accessToken,
           refresh_token: refreshToken,
         });
-        window.location.replace('/InsuranceTrackingSystem/' + (res.data.redirect || 'student/dashboard.html'));
+        window.location.replace(appPath(res.data.redirect || 'student/dashboard.html'));
       } catch (err) {
         showAlert(alertBox, err.message || 'Google sign-in failed.', 'danger');
         setTimeout(() => { window.location.href = '../login.html'; }, 2500);

@@ -8,7 +8,7 @@
 
   function showDashboardError(err, fallback = 'Request failed.') {
     if (err?.status === 401) {
-      window.location.href = '/InsuranceTrackingSystem/login.html';
+      window.location.href = typeof appPath === 'function' ? appPath('login.html') : '/login.html';
       return;
     }
     showAlert(alertBox, err?.message || fallback, 'danger');
