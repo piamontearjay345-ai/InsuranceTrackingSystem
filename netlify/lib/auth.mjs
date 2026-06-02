@@ -26,6 +26,7 @@ export async function register(data) {
     email,
     password: data.password,
     data: { fullname: data.fullname, student_id: data.student_id, username, role },
+    options: { emailRedirectTo: emailConfirmRedirectUrl() },
   });
   if (!signup.ok) {
     let msg = signup.error || 'Registration failed.';
@@ -45,7 +46,46 @@ export async function register(data) {
     }, `id=eq.${userId}`, true);
   }
 
-  return { success: true, message: 'Registration successful. Please sign in.' };
+  const needsEmailConfirm = signupNeedsEmailConfirmation(signup.data || {});
+  return {
+    success: true,
+    message: needsEmailConfirm
+      ? 'Registration successful. Please check your email and click the confirmation link, then sign in.'
+      : 'Registration successful. Please sign in.',
+    data: { email_confirmation_required: needsEmailConfirm },
+  };
+}
+
+export async function confirmEmail(tokenHash, type = 'signup', code = '') {
+  const allowed = ['signup', 'email', 'email_change', 'invite', 'magiclink', 'recovery'];
+  const t = allowed.includes(type) ? type : 'signup';
+
+  let verify;
+  if (tokenHash) {
+    verify = await db.authVerify(t, tokenHash);
+  } else if (code) {
+    verify = await db.authVerifyOtp(t, code);
+  } else {
+    return { success: false, message: 'Invalid confirmation link.' };
+  }
+
+  if (!verify.ok) {
+    return { success: false, message: verify.error || 'Invalid or expired confirmation link.' };
+  }
+  return { success: true, message: 'Email confirmed successfully. You can now log in.' };
+}
+
+function emailConfirmRedirectUrl() {
+  const base = env('URL', env('APP_URL', '')).replace(/\/$/, '');
+  return base ? `${base}/auth/email-confirmed.html` : '/auth/email-confirmed.html';
+}
+
+function signupNeedsEmailConfirmation(signupData) {
+  if (signupData?.session?.access_token || signupData?.access_token) return false;
+  const user = signupData.user || signupData;
+  if (user?.confirmation_sent_at && !user?.email_confirmed_at) return true;
+  if (!user?.email_confirmed_at && user?.confirmed_at == null && user?.email) return true;
+  return false;
 }
 
 export async function registerRole(data, role) {

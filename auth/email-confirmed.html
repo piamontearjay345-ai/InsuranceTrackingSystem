@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Confirmed - Student Insurance Tracking System</title>
+  <link rel="stylesheet" href="../styles.css?v=20260608">
+  <link rel="stylesheet" href="../assets/css/app.css?v=20260608">
+  <link rel="stylesheet" href="../assets/css/responsive.css?v=20260608">
+</head>
+<body class="auth-body">
+  <div class="top-bar">
+    <div class="top-bar-left">Eastern Visayas State University - Ormoc City Campus</div>
+  </div>
+
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-content" style="text-align:center;padding:36px 24px;">
+        <div id="state-loading">
+          <div class="loading-spinner" style="margin:0 auto 16px;"></div>
+          <p class="muted">Confirming your email…</p>
+        </div>
+
+        <div id="state-success" class="hidden">
+          <div class="confirm-icon" aria-hidden="true">✓</div>
+          <h2 class="auth-title" style="margin-top:16px;">Email confirmed</h2>
+          <p class="muted" style="margin:12px 0 24px;line-height:1.5;">
+            Your email address has been verified.<br>
+            <strong>You can now log in to the system.</strong>
+          </p>
+          <a href="../login.html" class="btn btn-primary auth-submit" id="btn-login" style="display:inline-block;text-decoration:none;">Go to Login</a>
+        </div>
+
+        <div id="state-error" class="hidden">
+          <h2 class="auth-title">Confirmation failed</h2>
+          <div id="alert-box"></div>
+          <p class="muted" style="margin:16px 0;">
+            <a href="../register.html" class="auth-link">Register again</a>
+            <span> · </span>
+            <a href="../login.html" class="auth-link">Sign in</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .confirm-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+      color: #fff;
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 64px;
+      box-shadow: 0 4px 14px rgba(46, 125, 50, 0.35);
+    }
+    .hidden { display: none !important; }
+  </style>
+
+  <script src="../assets/js/api.js?v=20260608"></script>
+  <script src="../assets/js/auth.js?v=20260608"></script>
+  <script>
+    (function () {
+      const loading = document.getElementById('state-loading');
+      const success = document.getElementById('state-success');
+      const error = document.getElementById('state-error');
+      const alertBox = document.getElementById('alert-box');
+      const loginBtn = document.getElementById('btn-login');
+
+      if (typeof appPath === 'function') {
+        loginBtn.href = appPath('login.html');
+        document.querySelectorAll('#state-error a[href]').forEach((a) => {
+          if (a.getAttribute('href') === '../login.html') a.href = appPath('login.html');
+          if (a.getAttribute('href') === '../register.html') a.href = appPath('register.html');
+        });
+      }
+
+      function showSuccess() {
+        loading.classList.add('hidden');
+        error.classList.add('hidden');
+        success.classList.remove('hidden');
+      }
+
+      function showError(message) {
+        loading.classList.add('hidden');
+        success.classList.add('hidden');
+        error.classList.remove('hidden');
+        if (typeof showAlert === 'function') {
+          showAlert(alertBox, message || 'This confirmation link is invalid or has expired.', 'danger');
+        } else {
+          alertBox.textContent = message || 'This confirmation link is invalid or has expired.';
+        }
+      }
+
+      (async function run() {
+        const query = new URLSearchParams(window.location.search);
+        const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+
+        const err =
+          query.get('error_description') ||
+          query.get('error') ||
+          hash.get('error_description') ||
+          hash.get('error');
+        if (err) {
+          showError(decodeURIComponent(err.replace(/\+/g, ' ')));
+          return;
+        }
+
+        // Supabase already confirmed and appended session to URL hash
+        if (hash.get('access_token') || query.get('access_token')) {
+          showSuccess();
+          return;
+        }
+
+        const tokenHash = query.get('token_hash') || hash.get('token_hash');
+        const type = query.get('type') || hash.get('type') || 'signup';
+
+        if (tokenHash) {
+          try {
+            await API.post('/auth/confirm-email', {
+              token_hash: tokenHash,
+              type,
+            });
+            showSuccess();
+          } catch (e) {
+            showError(e.message || 'Could not confirm your email.');
+          }
+          return;
+        }
+
+        // Some templates only pass ?code= for PKCE (optional)
+        const code = query.get('code');
+        if (code) {
+          try {
+            await API.post('/auth/confirm-email', { code, type });
+            showSuccess();
+          } catch (e) {
+            showError(e.message || 'Could not confirm your email.');
+          }
+          return;
+        }
+
+        showError('Missing confirmation token. Please use the link from your email.');
+      })();
+    })();
+  </script>
+</body>
+</html>

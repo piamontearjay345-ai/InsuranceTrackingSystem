@@ -16,6 +16,7 @@ const CSRF_EXEMPT = new Set([
   '/auth/verify-reset-code',
   '/auth/reset-password',
   '/auth/oauth/complete',
+  '/auth/confirm-email',
   '/csrf',
 ]);
 
@@ -94,7 +95,18 @@ export async function handle(event) {
       if (errors) return response.error('Validation failed.', 422, errors);
       const result = await auth.register(body);
       if (!result.success) return response.error(result.message, 400);
-      return response.success(null, result.message, 201);
+      return response.success(result.data ?? null, result.message, 201);
+    }
+
+    if (path === '/auth/confirm-email' && method === 'POST') {
+      const body = jsonBody(event);
+      const result = await auth.confirmEmail(
+        String(body.token_hash || '').trim(),
+        String(body.type || 'signup').trim(),
+        String(body.code || '').trim()
+      );
+      if (!result.success) return response.error(result.message, 400);
+      return response.success(null, result.message);
     }
 
     if (path === '/auth/login' && method === 'POST') {

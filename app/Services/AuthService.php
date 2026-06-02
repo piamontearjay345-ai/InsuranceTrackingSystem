@@ -45,6 +45,9 @@ class AuthService
                 'username' => $username,
                 'role' => $role,
             ],
+            'options' => [
+                'emailRedirectTo' => $this->emailConfirmRedirectUrl(),
+            ],
         ]);
 
         if (!$signup['ok']) {
@@ -68,7 +71,66 @@ class AuthService
             ], 'id=eq.' . $userId, true);
         }
 
-        return ['success' => true, 'message' => 'Registration successful. Please sign in.'];
+        $needsEmailConfirm = $this->signupNeedsEmailConfirmation($signup['data'] ?? []);
+
+        return [
+            'success' => true,
+            'message' => $needsEmailConfirm
+                ? 'Registration successful. Please check your email and click the confirmation link, then sign in.'
+                : 'Registration successful. Please sign in.',
+            'data' => ['email_confirmation_required' => $needsEmailConfirm],
+        ];
+    }
+
+    public function confirmEmail(string $tokenHash, string $type = 'signup', string $code = ''): array
+    {
+        $allowed = ['signup', 'email', 'email_change', 'invite', 'magiclink', 'recovery'];
+        $type = in_array($type, $allowed, true) ? $type : 'signup';
+
+        if ($tokenHash !== '') {
+            $verify = $this->db->authVerify($type, $tokenHash);
+        } elseif ($code !== '') {
+            $verify = $this->db->authVerifyOtp($type, $code);
+        } else {
+            return ['success' => false, 'message' => 'Invalid confirmation link.'];
+        }
+
+        if (!$verify['ok']) {
+            $msg = is_string($verify['error']) ? $verify['error'] : 'Invalid or expired confirmation link.';
+            return ['success' => false, 'message' => $msg];
+        }
+
+        return [
+            'success' => true,
+            'message' => 'Email confirmed successfully. You can now log in.',
+        ];
+    }
+
+    private function emailConfirmRedirectUrl(): string
+    {
+        $base = rtrim(Env::get('APP_URL', ''), '/');
+        if ($base === '') {
+            return '/auth/email-confirmed.html';
+        }
+        return $base . '/auth/email-confirmed.html';
+    }
+
+    private function signupNeedsEmailConfirmation(array $signupData): bool
+    {
+        if (isset($signupData['session']['access_token']) && $signupData['session']['access_token'] !== '') {
+            return false;
+        }
+        if (!empty($signupData['access_token'])) {
+            return false;
+        }
+        $user = $signupData['user'] ?? $signupData;
+        if (is_array($user) && empty($user['email_confirmed_at']) && !empty($user['confirmation_sent_at'])) {
+            return true;
+        }
+        if (is_array($user) && empty($user['email_confirmed_at']) && ($user['confirmed_at'] ?? null) === null) {
+            return true;
+        }
+        return false;
     }
 
     public function registerRole(array $data, string $role): array

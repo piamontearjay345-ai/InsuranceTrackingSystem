@@ -107,6 +107,7 @@ $csrfExempt = in_array($path, [
     '/auth/verify-reset-code',
     '/auth/reset-password',
     '/auth/oauth/complete',
+    '/auth/confirm-email',
     '/csrf',
 ], true);
 
@@ -129,6 +130,7 @@ try {
         $path === '/auth/verify-reset-code' && $method === 'POST' => $auth->verifyResetCode(),
         $path === '/auth/reset-password' && $method === 'POST' => $auth->resetPassword(),
         $path === '/auth/oauth/complete' && $method === 'POST' => $auth->oauthComplete(),
+        $path === '/auth/confirm-email' && $method === 'POST' => $auth->confirmEmail(),
         $path === '/auth/google/url' && $method === 'GET' => $auth->googleUrl(),
         $path === '/auth/logout' && $method === 'POST' => $auth->logout(),
         $path === '/auth/me' && $method === 'GET' => $auth->me(),

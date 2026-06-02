@@ -43,7 +43,22 @@ In **Site settings → Environment variables**, add:
 | `COOKIE_SECURE` | `true` |
 | `COOKIE_SAMESITE` | `Lax` |
 
-## 4. Supabase SQL
+## 4. Supabase Auth URLs (email confirmation)
+
+In **Supabase Dashboard → Authentication → URL Configuration**:
+
+| Setting | Value |
+|---------|--------|
+| **Site URL** | `https://YOUR-SITE.netlify.app` (not `localhost`) |
+| **Redirect URLs** | `https://YOUR-SITE.netlify.app/auth/email-confirmed.html` |
+
+For local XAMPP testing, also add:
+
+`http://localhost/InsuranceTrackingSystem/auth/email-confirmed.html`
+
+Set **`APP_URL`** in Netlify (and `.env` locally) to the same base URL with **no trailing slash**. New signups get confirmation links to `/auth/email-confirmed.html`, which shows “You can now log in to the system.”
+
+## 5. Supabase SQL
 
 Run once in Supabase SQL Editor:
 
@@ -52,7 +67,7 @@ Run once in Supabase SQL Editor:
 - `db/beneficiary_update_request_status_migration.sql`
 - `db/password_reset_codes_migration.sql`
 
-## 5. Google OAuth (optional)
+## 6. Google OAuth (optional)
 
 **Authorized redirect URI:**
 
@@ -62,7 +77,7 @@ https://YOUR-SITE.netlify.app/auth/google-callback.php
 
 (Netlify redirects that path to the Google callback function.)
 
-## 6. Promote superadmin
+## 7. Promote superadmin
 
 1. Register on the live site.
 2. Supabase SQL:
@@ -73,7 +88,7 @@ UPDATE public.users SET role = 'superadmin' WHERE email = 'your@email.com';
 
 3. Open: `https://YOUR-SITE.netlify.app/superadmin/dashboard.html`
 
-## 7. Test locally with Netlify Dev
+## 8. Test locally with Netlify Dev
 
 ```bash
 npm install

@@ -63,6 +63,14 @@ class SupabaseClient
         ], $this->anonKey);
     }
 
+    public function authVerifyOtp(string $type, string $code): array
+    {
+        return $this->request('POST', '/auth/v1/verify', [
+            'type' => $type,
+            'token' => $code,
+        ], $this->anonKey);
+    }
+
     public function adminCreateUser(array $payload): array
     {
         return $this->request('POST', '/auth/v1/admin/users', $payload, $this->serviceKey, $this->serviceKey);

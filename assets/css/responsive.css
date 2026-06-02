@@ -234,7 +234,9 @@ svg {
 }
 
 /* ─── Full-screen dashboards (student, admin, superadmin) ─── */
-@media (max-width: 992px) {
+
+/* Tablet: sidebar on top, still visible */
+@media (max-width: 992px) and (min-width: 769px) {
   .page-dashboard-fullscreen .dashboard-main-layout {
     flex-direction: column !important;
   }
@@ -245,43 +247,29 @@ svg {
     min-height: 0 !important;
     height: auto !important;
     flex-shrink: 0;
-    overflow: visible;
     padding-top: 12px;
-    padding-bottom: 4px;
-  }
-
-  .page-dashboard-fullscreen .dashboard-sidebar::after {
-    display: none;
+    padding-bottom: 8px;
   }
 
   .page-dashboard-fullscreen .dashboard-sidebar .nav-section {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: stretch;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 8px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    padding: 4px 12px 10px;
-    margin-bottom: 0;
+    padding: 4px 12px 8px;
   }
 
   .page-dashboard-fullscreen .dashboard-sidebar .nav-section-title {
-    display: none;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 8px;
   }
 
   .page-dashboard-fullscreen .dashboard-sidebar .nav-item {
-    flex: 0 0 auto;
+    flex: 0 1 auto;
     white-space: nowrap;
     margin: 0;
-    padding: 10px 14px;
-    min-height: 44px;
-  }
-
-  .page-dashboard-fullscreen .dashboard-sidebar .nav-item:hover {
-    transform: none;
   }
 
   .page-dashboard-fullscreen .dashboard-main-layout .main-content {
@@ -295,19 +283,279 @@ svg {
   }
 }
 
-@media (max-width: 576px) {
-  .page-dashboard-fullscreen .content-header {
-    font-size: 1.2rem;
-    margin-bottom: 14px;
-    padding-bottom: 10px;
+/* Mobile: hamburger drawer + compact chrome */
+@media (max-width: 768px) {
+  html:has(.page-dashboard-fullscreen) {
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
-  .page-dashboard-fullscreen .stats-container {
-    grid-template-columns: 1fr !important;
+  .page-dashboard-fullscreen {
+    height: auto;
+    min-height: 100dvh;
+    max-height: none;
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
+
+  .page-dashboard-fullscreen .top-bar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px 10px;
+    padding: 8px 12px;
+    font-size: 11px;
+    text-align: left;
+  }
+
+  .page-dashboard-fullscreen .top-bar-left {
+    display: none;
+  }
+
+  .page-dashboard-fullscreen .top-bar-right {
+    width: auto;
+    margin-left: auto;
+    flex-wrap: nowrap;
+    gap: 8px;
+    font-size: 11px;
+  }
+
+  .page-dashboard-fullscreen .top-bar-right #admin-name,
+  .page-dashboard-fullscreen .top-bar-right #student-name {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .page-dashboard-fullscreen .main-header {
+    padding: 10px 12px;
+  }
+
+  .page-dashboard-fullscreen .logo-title {
+    flex-direction: row;
+    text-align: left;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .page-dashboard-fullscreen .logo-image {
+    width: 42px !important;
+    height: 42px !important;
+  }
+
+  .page-dashboard-fullscreen .title-text h1 {
+    font-size: 1.1rem !important;
+  }
+
+  .page-dashboard-fullscreen .title-text p {
+    display: none;
+  }
+
+  .dashboard-mobile-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: linear-gradient(135deg, var(--evsu-red) 0%, var(--evsu-dark-red) 100%);
+    border-bottom: 2px solid var(--evsu-yellow);
+    flex-shrink: 0;
+    z-index: 1002;
+  }
+
+  .dashboard-mobile-toolbar-label {
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: 0.02em;
+  }
+
+  .dashboard-menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .dashboard-menu-toggle-bar {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #fff;
+    border-radius: 1px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .dashboard-nav-open .dashboard-menu-toggle-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .dashboard-nav-open .dashboard-menu-toggle-bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .dashboard-nav-open .dashboard-menu-toggle-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .dashboard-nav-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1998;
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  .dashboard-nav-overlay[hidden] {
+    display: none !important;
+  }
+
+  .page-dashboard-fullscreen .dashboard-main-layout {
+    flex-direction: column !important;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: visible;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .page-dashboard-fullscreen .dashboard-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: min(288px, 88vw);
+    max-width: none !important;
+    height: 100dvh !important;
+    z-index: 1999;
+    transform: translateX(-105%);
+    transition: transform 0.25s ease;
+    overflow-y: auto;
+    padding: 16px 0 24px;
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.25);
+  }
+
+  .page-dashboard-fullscreen .dashboard-sidebar::after {
+    display: none;
+  }
+
+  .dashboard-nav-open .page-dashboard-fullscreen .dashboard-sidebar {
+    transform: translateX(0);
+  }
+
+  .page-dashboard-fullscreen .dashboard-sidebar .nav-section {
+    display: block;
+    flex-direction: column;
+    overflow: visible;
+    padding: 8px 14px 16px;
+  }
+
+  .page-dashboard-fullscreen .dashboard-sidebar .nav-section-title {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .page-dashboard-fullscreen .dashboard-sidebar .nav-item {
+    display: flex;
+    width: 100%;
+    white-space: normal;
+    margin: 4px 0;
+    padding: 12px 14px;
+    min-height: 48px;
+    box-sizing: border-box;
+  }
+
+  .page-dashboard-fullscreen .dashboard-sidebar .nav-item:hover {
+    transform: none;
+  }
+
+  .page-dashboard-fullscreen .dashboard-sidebar .nav-item.active {
+    box-shadow: inset 3px 0 0 var(--evsu-yellow);
+  }
+
+  .page-dashboard-fullscreen .dashboard-main-layout .main-content {
+    padding: 14px 12px 28px !important;
+    width: 100% !important;
+    overflow: visible;
+    min-height: auto;
+    flex: 1 1 auto;
+  }
+
+  .page-dashboard-fullscreen .dashboard-page-header {
+    padding-bottom: 12px;
+    margin-bottom: 8px;
+  }
+
+  .page-dashboard-fullscreen .content-header {
+    font-size: 1.25rem;
+  }
+
+  .page-dashboard-fullscreen .dashboard-page-subtitle {
+    font-size: 0.8125rem;
+    margin-top: 4px;
+  }
+
+  .page-dashboard-fullscreen .stats-container,
+  .page-dashboard-fullscreen .stats-container.stats-container--wide {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px;
+  }
+
+  .page-dashboard-fullscreen .stat-card {
+    padding: 12px 14px !important;
+    min-height: 0;
+  }
+
+  .page-dashboard-fullscreen .stat-label {
+    margin-bottom: 4px;
+    font-size: 0.625rem;
   }
 
   .page-dashboard-fullscreen .stat-number {
-    font-size: 1.75rem !important;
+    font-size: 1.5rem !important;
+  }
+
+  .page-dashboard-fullscreen .stat-card:hover {
+    transform: none;
+  }
+
+  /* Student dashboard: 3 stat cards — third spans full width on 2-col grid */
+  .page-dashboard-fullscreen #panel-overview .stats-container:not(.stats-container--wide) .stat-card:last-child:nth-child(3) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 769px) {
+  .dashboard-mobile-toolbar,
+  .dashboard-nav-overlay {
+    display: none !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-dashboard-fullscreen .content-header {
+    font-size: 1.15rem;
+  }
+
+  .page-dashboard-fullscreen .stats-container,
+  .page-dashboard-fullscreen .stats-container.stats-container--wide {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .page-dashboard-fullscreen .stat-number {
+    font-size: 1.35rem !important;
   }
 
   .page-dashboard-fullscreen .toolbar {

@@ -31,7 +31,25 @@ class AuthController
         if (!$result['success']) {
             Response::error($result['message'], 400);
         }
-        Response::success(null, $result['message'], 201);
+        Response::success($result['data'] ?? null, $result['message'], 201);
+    }
+
+    public function confirmEmail(): void
+    {
+        $body = Security::jsonBody();
+        $tokenHash = trim($body['token_hash'] ?? '');
+        $code = trim($body['code'] ?? '');
+        $type = trim($body['type'] ?? 'signup');
+
+        if ($tokenHash === '' && $code === '') {
+            Response::error('Confirmation token is required.');
+        }
+
+        $result = $this->auth->confirmEmail($tokenHash, $type, $code);
+        if (!$result['success']) {
+            Response::error($result['message'], 400);
+        }
+        Response::success(null, $result['message']);
     }
 
     public function login(): void

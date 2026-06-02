@@ -21,10 +21,10 @@ $role = 'superadmin';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Superadmin Dashboard - Insurance Tracking</title>
-  <link rel="stylesheet" href="../styles.css?v=20260605">
-  <link rel="stylesheet" href="../assets/css/app.css?v=20260605">
-  <link rel="stylesheet" href="../assets/css/responsive.css?v=20260605">
-  <link rel="stylesheet" href="../assets/css/dashboard.css?v=20260605">
+  <link rel="stylesheet" href="../styles.css?v=20260608">
+  <link rel="stylesheet" href="../assets/css/app.css?v=20260608">
+  <link rel="stylesheet" href="../assets/css/responsive.css?v=20260608">
+  <link rel="stylesheet" href="../assets/css/dashboard.css?v=20260608">
 </head>
 <body class="page-dashboard-fullscreen dashboard-app">
   <div class="top-bar">
@@ -46,6 +46,16 @@ $role = 'superadmin';
       </div>
     </div>
   </header>
+
+  <div class="dashboard-mobile-toolbar">
+    <button type="button" class="dashboard-menu-toggle" id="dashboard-menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="dashboard-sidebar">
+      <span class="dashboard-menu-toggle-bar"></span>
+      <span class="dashboard-menu-toggle-bar"></span>
+      <span class="dashboard-menu-toggle-bar"></span>
+    </button>
+    <span class="dashboard-mobile-toolbar-label">Super Admin Menu</span>
+  </div>
+  <div class="dashboard-nav-overlay" id="dashboard-nav-overlay" hidden></div>
 
   <div class="main-layout dashboard-main-layout">
     <aside class="sidebar dashboard-sidebar" id="dashboard-sidebar">
@@ -338,11 +348,12 @@ $role = 'superadmin';
 
   <div class="loading-overlay" id="loading"><div class="loading-spinner"></div></div>
 
-  <script src="../assets/js/api.js?v=20260605"></script>
-  <script src="../assets/js/auth.js?v=20260605"></script>
+  <script src="../assets/js/api.js?v=20260608"></script>
+  <script src="../assets/js/auth.js?v=20260608"></script>
   <script>
     window.SUPERADMIN_PAGE = true;
   </script>
-  <script src="../assets/js/admin-dashboard.js?v=20260605"></script>
+  <script src="../assets/js/dashboard-mobile.js?v=20260608"></script>
+  <script src="../assets/js/admin-dashboard.js?v=20260608"></script>
 </body>
 </html>

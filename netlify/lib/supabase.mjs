@@ -81,6 +81,10 @@ export function authVerify(type, tokenHash) {
   return request('POST', '/auth/v1/verify', { type, token_hash: tokenHash }, env('SUPABASE_ANON_KEY'));
 }
 
+export function authVerifyOtp(type, code) {
+  return request('POST', '/auth/v1/verify', { type, token: code }, env('SUPABASE_ANON_KEY'));
+}
+
 export function adminCreateUser(payload) {
   const key = env('SUPABASE_SERVICE_ROLE_KEY');
   return request('POST', '/auth/v1/admin/users', payload, key, key);

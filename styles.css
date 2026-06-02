@@ -3261,23 +3261,25 @@ html:has(.page-dashboard-fullscreen) {
 }
 
 @media (max-width: 768px) {
-  .page-dashboard-fullscreen .top-bar,
-  .page-dashboard-fullscreen .main-header {
-    padding-left: 20px;
-    padding-right: 20px;
+  html:has(.page-dashboard-fullscreen) {
+    height: auto;
+    overflow-x: hidden;
+  }
+
+  .page-dashboard-fullscreen {
+    height: auto;
+    min-height: 100dvh;
+    max-height: none;
+    overflow-x: hidden;
   }
 
   .page-dashboard-fullscreen .dashboard-main-layout {
     flex-direction: column;
-  }
-
-  .page-dashboard-fullscreen .dashboard-sidebar {
-    width: 100%;
-    max-height: none;
-    flex-shrink: 0;
+    overflow: visible;
   }
 
   .page-dashboard-fullscreen .dashboard-main-layout .main-content {
-    padding: 20px 16px 32px;
+    overflow: visible;
+    min-height: auto;
   }
 }
